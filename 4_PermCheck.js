@@ -44,13 +44,14 @@
 // 배열 A의 각 요소는 [1.1,000,000] 범위 내의 정수입니다.
 function solution(A) {
     let answer = 0;
+
     const n = A.length;
     const gaussSum = (n * (1 + A.length)) / 2;
     const totalSum = A.reduce((sumValue, currValue) => sumValue + currValue);
 
-    if (gaussSum == totalSum) answer = 1;
+    if (gaussSum == totalSum && n == new Set(A).size) answer = 1;
 
     return answer;
 }
 
-solution([4, 1, 3]);
+solution([1, 4, 1]);

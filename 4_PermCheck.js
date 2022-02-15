@@ -42,16 +42,30 @@
 
 // N은 [1..] 범위 내의 정수입니다.100,000];
 // 배열 A의 각 요소는 [1.1,000,000] 범위 내의 정수입니다.
-function solution(A) {
-    let answer = 0;
+function solution(N, A) {
+    let counters = new Array(N).fill(0);
 
-    const n = A.length;
-    const gaussSum = (n * (1 + A.length)) / 2;
-    const totalSum = A.reduce((sumValue, currValue) => sumValue + currValue);
+    let maxCounter = 0;
 
-    if (gaussSum == totalSum && n == new Set(A).size) answer = 1;
+    let maxToSet = 0;
 
-    return answer;
+    for (let i = 0; i < A.length; i++) {
+        let X = A[i] - 1;
+
+        if (X === N) {
+            // lazy update all counters
+            maxToSet = maxCounter;
+        } else if (0 <= X && X < N) {
+            // see if we needed to set it to maxToSet but havent yet
+            counters[X] = Math.max(counters[X] + 1, maxToSet + 1);
+
+            maxCounter = Math.max(counters[X], maxCounter);
+        }
+    }
+
+    // update any counters to maxToSet that we havent yet
+    counters = counters.map((val) => Math.max(val, maxToSet));
+    return counters;
 }
 
 solution([1, 4, 1]);
